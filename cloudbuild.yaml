@@ -44,3 +44,11 @@ steps:
     - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/client:$SHORT_SHA
     - --location=europe-west2
     - --cluster=cluster-1
+  - name: "gcr.io/cloud-builders/gke-deploy"
+    id: deploy nginx to GKE
+    args:
+    - run
+    - --filename=kubernetes/nginx.yaml
+    - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA
+    - --location=europe-west2
+    - --cluster=cluster-1
