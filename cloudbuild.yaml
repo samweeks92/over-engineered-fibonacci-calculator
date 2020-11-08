@@ -1,0 +1,40 @@
+steps:
+    # build the client container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/client:$SHORT_SHA", "."]
+    id: Build client
+    # push client container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/client:$SHORT_SHA"]
+    id: Push client
+    # build the nginx container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA", "."]
+    id: Build nginx
+    # push nginx container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA"]
+    id: Push nginx
+    # build the server container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA", "."]
+    id: Build server
+    # push server container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA"]
+    id: Push server
+    # build the worker container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:$SHORT_SHA", "."]
+    id: Build worker
+    # push worker container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:$SHORT_SHA"]
+    id: Push worker
+    # deploy images to GKE
+  #- name: "gcr.io/cloud-builders/gke-deploy"
+   # args:
+    #- run
+    #- --filename=kubernetes/deployment-service.yaml
+    #- --location=europe-west2
+    #- --cluster=cluster-1
