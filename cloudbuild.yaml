@@ -36,9 +36,11 @@ steps:
     args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:$SHORT_SHA"]
     id: Push worker
     # deploy images to GKE
-  #- name: "gcr.io/cloud-builders/gke-deploy"
-   # args:
-    #- run
-    #- --filename=kubernetes/deployment-service.yaml
-    #- --location=europe-west2
-    #- --cluster=cluster-1
+  - name: "gcr.io/cloud-builders/gke-deploy"
+    id: deploy client to GKE
+    args:
+    - run
+    - --filename=kubernetes/client.yaml
+    - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/client:$SHORT_SHA
+    - --location=europe-west2
+    - --cluster=cluster-1

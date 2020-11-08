@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fib-calc-client-deployment
+  namespace: fib-calc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fib-calc
+      fib-calc-component: client
+  template:
+    metadata:
+      labels:
+        app: fib-calc
+        fib-calc-component: client
+    spec:
+      containers:
+      - name: client
+        image: gcr.io/sam-sandbox-243911/github.com/samweeks92overly-complicated-fibonacci-calculator/client
+        ports:
+        - name: container-port
+          containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+  namespace: fib-calc
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}' # Creates a NEG after an Ingress is created
+spec:
+  selector:
+    app: fib-calc
+    fib-calc-component: client
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: client-ingress
+  namespace: fib-calc
+spec:
+  backend:
+    serviceName: client
+    servicePort: 80
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: client
+          servicePort: 80
