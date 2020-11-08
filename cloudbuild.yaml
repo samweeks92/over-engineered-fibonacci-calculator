@@ -1,7 +1,8 @@
 steps:
     # build the client container image
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-f", "./client/Dockerfile", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/client:$SHORT_SHA", "."]
+    dir: client
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/client:$SHORT_SHA", "."]
     id: Build client
     # push client container image
   - name: "gcr.io/cloud-builders/docker"
@@ -9,7 +10,8 @@ steps:
     id: Push client
     # build the nginx container image
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-f", "./client/Dockerfile", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA", "."]
+    dir: nginx
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA", "."]
     id: Build nginx
     # push nginx container image
   - name: "gcr.io/cloud-builders/docker"
@@ -17,7 +19,8 @@ steps:
     id: Push nginx
     # build the server container image
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-f", "./client/Dockerfile", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA", "."]
+    dir: server
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA", "."]
     id: Build server
     # push server container image
   - name: "gcr.io/cloud-builders/docker"
@@ -25,7 +28,8 @@ steps:
     id: Push server
     # build the worker container image
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-f", "./client/Dockerfile", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:$SHORT_SHA", "."]
+    dir: worker
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:$SHORT_SHA", "."]
     id: Build worker
     # push worker container image
   - name: "gcr.io/cloud-builders/docker"
