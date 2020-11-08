@@ -21,15 +21,14 @@ after_success:
   - docker push samweeks/multi-server
   - docker push samweeks/multi-worker
 
-deploy:
-  provider: elasticbeanstalk
-  region: us-west-1
-  app: multi-docker
-  env: MultiDocker-env
-  bucket_name: elasticbeanstalk-us-west-1-306476627547
-  bucket_path: docker-multi
-  on:
-    branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key:
-    secure: $AWS_SECRET_KEY
+# deploy:
+#   provider: elasticbeanstalk
+#   region: "us-east-2"
+#   app: "udemy-docker-docker-react"
+#   env: "UdemyDockerDockerReact-env"
+#   bucket_name: "elasticbeanstalk-us-east-2-381364022671"
+#   bucket_path: "udemy-docker-docker-react"
+#   on:
+#       branch: main
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
