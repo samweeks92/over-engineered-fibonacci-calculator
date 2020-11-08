@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: gcr.io/sam-sandbox-243911/github.com/samweeks92overly-complicated-fibonacci-calculator/client:1.0
+        image: gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/client:1.0
         ports:
         - name: container-port
           containerPort: 80

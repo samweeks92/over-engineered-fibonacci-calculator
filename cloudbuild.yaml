@@ -37,6 +37,14 @@ steps:
     id: Push worker
     # deploy images to GKE
   - name: "gcr.io/cloud-builders/gke-deploy"
+    id: deploy nginx to GKE
+    args:
+    - run
+    - --filename=kubernetes/nginx.yaml
+    - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA
+    - --location=europe-west2
+    - --cluster=cluster-1
+  - name: "gcr.io/cloud-builders/gke-deploy"
     id: deploy client to GKE
     args:
     - run
@@ -45,10 +53,10 @@ steps:
     - --location=europe-west2
     - --cluster=cluster-1
   - name: "gcr.io/cloud-builders/gke-deploy"
-    id: deploy nginx to GKE
+    id: deploy server to GKE
     args:
     - run
-    - --filename=kubernetes/nginx.yaml
-    - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA
+    - --filename=kubernetes/server.yaml
+    - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA
     - --location=europe-west2
     - --cluster=cluster-1
