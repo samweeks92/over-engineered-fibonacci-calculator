@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: gcr.io/sam-sandbox-243911/github.com/samweeks92overly-complicated-fibonacci-calculator/nginx:1.0
+        image: gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:1.0
         ports:
         - name: container-port
           containerPort: 80
@@ -27,11 +27,30 @@ kind: Service
 metadata:
   name: nginx
   namespace: fib-calc
+  #annotations:
+  #  cloud.google.com/neg: '{"ingress": true}' # Creates a NEG after an Ingress is created
 spec:
   selector:
     app: fib-calc
     fib-calc-component: nginx
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - port: 80
     targetPort: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: fib-calc
+spec:
+  backend:
+    serviceName: nginx
+    servicePort: 80
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx
+          servicePort: 80
