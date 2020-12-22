@@ -37,6 +37,14 @@ steps:
     id: Push worker
     # deploy images to GKE
   - name: "gcr.io/cloud-builders/gke-deploy"
+    id: deploy redis to GKE
+    args:
+    - run
+    - --filename=kubernetes/redis.yaml
+    - --image=redis
+    - --location=europe-west2
+    - --cluster=cluster-1
+  - name: "gcr.io/cloud-builders/gke-deploy"
     id: deploy nginx to GKE
     args:
     - run
