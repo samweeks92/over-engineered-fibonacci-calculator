@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fib-calc-worker-deployment
+  namespace: fib-calc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fib-calc
+      fib-calc-component: worker
+  template:
+    metadata:
+      labels:
+        app: fib-calc
+        fib-calc-component: worker
+    spec:
+      containers:
+      - name: nginx
+        image: gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:1.0
+        env:
+        - name: REDIS_HOST
+          value: redis
+        - name: REDIS_PORT
+          value: "6379"

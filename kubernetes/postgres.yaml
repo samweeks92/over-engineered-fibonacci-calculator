@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fib-calc-postgres-deployment
+  namespace: fib-calc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fib-calc
+      fib-calc-component: postgres
+  template:
+    metadata:
+      labels:
+        app: fib-calc
+        fib-calc-component: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:latest
+        env: 
+        - name: POSTGRES_PASSWORD
+          value: postgres_password
+        ports:
+        - name: container-port
+          containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: fib-calc
+spec:
+  selector:
+    app: fib-calc
+    fib-calc-component: postgres
+  type: ClusterIP
+  ports:
+  - port: 5432
+    targetPort: 5432
