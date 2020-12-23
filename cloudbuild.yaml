@@ -42,6 +42,7 @@ steps:
     - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA
     - --location=europe-west2
     - --cluster=cluster-1
+    - --ouput=output/nginx
 
 
 
