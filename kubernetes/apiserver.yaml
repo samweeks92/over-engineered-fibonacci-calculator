@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fib-calc-api-deployment
+  name: fib-calc-apiserver-deployment
   namespace: fib-calc
 spec:
   replicas: 1
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:1.0
+        image: gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/apiserver:1.0
         env:
         - name: PGUSER
           valueFrom:
@@ -61,12 +61,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: api
+  name: apiserver
   namespace: fib-calc
 spec:
   selector:
     app: fib-calc
-    fib-calc-component: api
+    fib-calc-component: apis
   type: ClusterIP
   ports:
   - port: 5000

@@ -48,24 +48,24 @@ steps:
 
 
 
-    # build the server container image
+    # build the apiserver container image
   - name: "gcr.io/cloud-builders/docker"
     dir: server
-    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA", "."]
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/apiserver:$SHORT_SHA", "."]
     id: Build server
 
-    # push server container image
+    # push apiserver container image
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA"]
+    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/apiserver:$SHORT_SHA"]
     id: Push server
 
-    # deploy the server container image to GKE
+    # deploy the apiserver container image to GKE
   - name: "gcr.io/cloud-builders/gke-deploy"
-    id: deploy server to GKE
+    id: deploy apiserver to GKE
     args:
     - run
-    - --filename=kubernetes/server.yaml
-    - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/api:$SHORT_SHA
+    - --filename=kubernetes/apiserver.yaml
+    - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/apiserver:$SHORT_SHA
     - --location=europe-west2
     - --cluster=cluster-1
 

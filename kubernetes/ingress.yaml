@@ -4,13 +4,16 @@ metadata:
   name: nginx-ingress
   namespace: fib-calc
 spec:
-  backend:
-    serviceName: nginx
-    servicePort: 80
   rules:
   - http:
       paths:
-      - path: /
+      - path: /*
         backend:
-          serviceName: nginx
-          servicePort: 80
+          serviceName: client
+          servicePort: 5000
+      - path: /api
+        backend:
+          serviceName: api
+          servicePort: 5000
+
+      
