@@ -1,8 +1,22 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.gke.io/v1beta2
+kind: ManagedCertificate
+metadata:
+  name: fib-calc-ingress
+spec:
+  domains:
+    #edit this to be the name of the domain that you have registered the static IP against
+    - fib-calc.samweeks.london
+---    
+apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: fib-calc-ingress
   namespace: fib-calc
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.global-static-ip-name: "fib-ingress-ip"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    networking.gke.io/managed-certificates: fib-calc-ingress
 spec:
   rules:
   - http:
@@ -11,7 +25,7 @@ spec:
         backend:
           serviceName: client
           servicePort: 3000
-      - path: /api
+      - path: /api/
         backend:
           serviceName: api
           servicePort: 5000
