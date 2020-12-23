@@ -68,6 +68,7 @@ steps:
     - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/apiserver:$SHORT_SHA
     - --location=europe-west2
     - --cluster=cluster-1
+    - --output=output/apiserver
 
 
 
@@ -91,3 +92,15 @@ steps:
     - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:$SHORT_SHA
     - --location=europe-west2
     - --cluster=cluster-1
+    - --output=output/worker
+
+
+  # deploy the ingress object image to GKE
+  - name: "gcr.io/cloud-builders/gke-deploy"
+    id: deploy ingress to GKE
+    args:
+    - run
+    - --filename=kubernetes/ingress.yaml
+    - --location=europe-west2
+    - --cluster=cluster-1
+    - --output=output/ingress
