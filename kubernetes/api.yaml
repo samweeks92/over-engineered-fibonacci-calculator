@@ -19,20 +19,41 @@ spec:
       - name: nginx
         image: gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:1.0
         env:
-        - name: REDIS_HOST
-          value: redis
-        - name: REDIS_PORT
-          value: "6379"
         - name: PGUSER
-          value: postgres
-        - name: PGHOST
-          value: postgres
-        - name: PGDATABASE
-          value: postgres
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: username
         - name: PGPASSWORD
-          value: postgres_password
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: password
+        - name: PGDATABASE
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: database
+        - name: PGHOST
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: db_host
         - name: PGPORT
-          value: "5432"
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: port
+        - name: REDIS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: REDIS_PORT
         ports:
         - name: container-port
           containerPort: 5000

@@ -4,54 +4,13 @@ steps:
     dir: client
     args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/client:$SHORT_SHA", "."]
     id: Build client
+
     # push client container image
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/client:$SHORT_SHA"]
     id: Push client
-    # build the nginx container image
-  - name: "gcr.io/cloud-builders/docker"
-    dir: nginx
-    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA", "."]
-    id: Build nginx
-    # push nginx container image
-  - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA"]
-    id: Push nginx
-    # build the server container image
-  - name: "gcr.io/cloud-builders/docker"
-    dir: server
-    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA", "."]
-    id: Build server
-    # push server container image
-  - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA"]
-    id: Push server
-    # build the worker container image
-  - name: "gcr.io/cloud-builders/docker"
-    dir: worker
-    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:$SHORT_SHA", "."]
-    id: Build worker
-    # push worker container image
-  - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:$SHORT_SHA"]
-    id: Push worker
-    # deploy images to GKE
-  - name: "gcr.io/cloud-builders/gke-deploy"
-    id: deploy redis to GKE
-    args:
-    - run
-    - --filename=kubernetes/redis.yaml
-    - --image=redis
-    - --location=europe-west2
-    - --cluster=cluster-1
-  - name: "gcr.io/cloud-builders/gke-deploy"
-    id: deploy nginx to GKE
-    args:
-    - run
-    - --filename=kubernetes/nginx.yaml
-    - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA
-    - --location=europe-west2
-    - --cluster=cluster-1
+
+    # deploy the client container image to GKE
   - name: "gcr.io/cloud-builders/gke-deploy"
     id: deploy client to GKE
     args:
@@ -60,11 +19,74 @@ steps:
     - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/client:$SHORT_SHA
     - --location=europe-west2
     - --cluster=cluster-1
+
+
+
+    # build the nginx container image
+  - name: "gcr.io/cloud-builders/docker"
+    dir: nginx
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA", "."]
+    id: Build nginx
+
+    # push nginx container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA"]
+    id: Push nginx
+
+    # deploy the nginx container image to GKE
+  - name: "gcr.io/cloud-builders/gke-deploy"
+    id: deploy nginx to GKE
+    args:
+    - run
+    - --filename=kubernetes/nginx.yaml
+    - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/nginx:$SHORT_SHA
+    - --location=europe-west2
+    - --cluster=cluster-1
+
+
+
+
+
+    # build the server container image
+  - name: "gcr.io/cloud-builders/docker"
+    dir: server
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA", "."]
+    id: Build server
+
+    # push server container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA"]
+    id: Push server
+
+    # deploy the server container image to GKE
   - name: "gcr.io/cloud-builders/gke-deploy"
     id: deploy server to GKE
     args:
     - run
     - --filename=kubernetes/server.yaml
     - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/server:$SHORT_SHA
+    - --location=europe-west2
+    - --cluster=cluster-1
+
+
+
+    # build the worker container image
+  - name: "gcr.io/cloud-builders/docker"
+    dir: worker
+    args: ["build", "-t", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:$SHORT_SHA", "."]
+    id: Build worker
+
+    # push worker container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:$SHORT_SHA"]
+    id: Push worker
+
+  # deploy the worker container image to GKE
+  - name: "gcr.io/cloud-builders/gke-deploy"
+    id: deploy worker to GKE
+    args:
+    - run
+    - --filename=kubernetes/worker.yaml
+    - --image=gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:$SHORT_SHA
     - --location=europe-west2
     - --cluster=cluster-1

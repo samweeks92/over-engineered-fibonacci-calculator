@@ -20,6 +20,12 @@ spec:
         image: gcr.io/sam-sandbox-243911/github.com/samweeks92/overly-complicated-fibonacci-calculator/worker:1.0
         env:
         - name: REDIS_HOST
-          value: redis
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: REDIS_HOST
         - name: REDIS_PORT
-          value: "6379"
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: REDIS_PORT
