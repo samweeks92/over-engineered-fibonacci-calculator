@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: nginx-ingress
+  name: fib-calc-ingress
   namespace: fib-calc
 spec:
   rules:
@@ -10,7 +10,7 @@ spec:
       - path: /*
         backend:
           serviceName: client
-          servicePort: 5000
+          servicePort: 3000
       - path: /api
         backend:
           serviceName: api
