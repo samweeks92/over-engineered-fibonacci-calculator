@@ -67,7 +67,7 @@ spec:
   selector:
     app: fib-calc
     fib-calc-component: api
-  type: ClusterIP
+  type: NodePort
   ports:
   - port: 5000
     targetPort: 5000

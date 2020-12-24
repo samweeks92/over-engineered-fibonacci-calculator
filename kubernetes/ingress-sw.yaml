@@ -8,15 +8,13 @@
 #     #edit this to be the name of the domain that you have registered the static IP against
 #     - fib-calc.samweeks.london
 #---    
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: fib-ingress
   namespace: fib-calc
   annotations:
-    kubernetes.io/ingress.class: nginx
-    #kubernetes.io/ingress.global-static-ip-name: "fib-ingress-ip"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.global-static-ip-name: "fib-ingress-ip"
     #networking.gke.io/managed-certificates: fib-calc-ingress
 spec:
   rules:
