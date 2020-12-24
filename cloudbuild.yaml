@@ -100,7 +100,7 @@ steps:
     id: deploy ingress to GKE
     args:
     - run
-    - --filename=kubernetes/ingress.yaml
+    - --filename=kubernetes/ingress-sw.yaml
     - --location=europe-west2
     - --cluster=cluster-1
     - --output=output/ingress
